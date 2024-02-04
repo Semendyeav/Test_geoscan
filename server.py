@@ -51,7 +51,7 @@ def start_server():
                 client_coordinates = tuple(map(float, data.split(',')))
 
                 # Check for intersection with the obstacle
-                if intersects(obstacle_position, client_coordinates, list_coords):
+                if intersects(client_coordinates, list_coords):
                     response = "Intersection with obstacle at {}".format(obstacle_position)
                 else:
                     response = "No intersection with obstacle"
