@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib import ticker
 
+size_of_obstacles = 1  # size of obstacle in metres
 def start_server():
     '''
     create a server
@@ -19,7 +20,6 @@ def start_server():
     n = 5 #count of obstacles
     x_max = 10 #max of length of x-axe
     y_max = 10 #max of length of y-axe
-    size_of_obstacles = 1 #size of obstacle in metres
     list_coords = []
     fig, ax = plt.subplots()
     ax.set_xlim(0, x_max)
@@ -52,7 +52,7 @@ def start_server():
 
                 # Check for intersection with the obstacle
                 if intersects(client_coordinates, list_coords):
-                    response = "Intersection with obstacle at {}".format(obstacle_position)
+                    response = "Intersection with obstacle"
                 else:
                     response = "No intersection with obstacle"
 
@@ -69,6 +69,12 @@ def start_server():
 
         finally:
             client_socket.close()
+
+def check_coordinate(min_coordinate, current_coordinate):
+    max_coordinate = min_coordinate + size_of_obstacles
+    if min_coordinate < current_coordinate < max_coordinate:
+        return True
+    return False
 def intersects(client, list_coords):
     '''
     function for check an intersection between client and obstacle
@@ -76,8 +82,8 @@ def intersects(client, list_coords):
     :param list_coords: coordinates of all obstacles
     :return: True or False
     '''
-    for item in list_coords:
-        if item[0] <= client[0] <= item[0] + 1 and item[1] <= client[1] <= item[1] + 1:
+    for coordinate in list_coords:
+        if check_coordinate(coordinate[0], client[0]) and check_coordinate(coordinate[1], client[1]):
             return True
     return False
 
